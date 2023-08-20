@@ -13,9 +13,9 @@ public class Conexao {
 	private Statement statement;
 	private ResultSet resultSet;
 	private Connection conexao = null;
-	private DatabaseType databaseType;
-//	private DatabaseTypeFile databaseTypeFile;
-//	private String path = "";
+	private DatabaseType databaseType = null;
+	private DatabaseTypeFile databaseTypeFile = null;
+	private String path = "";
 	private String user ="";
 	private String password= "";
 	private String ip = "";
@@ -53,14 +53,14 @@ public class Conexao {
 	 * @param ip = ip or url for Database
 	 * @param charset = default(utf_8)
 	 */
-//	public Conexao(DatabaseTypeFile databaseTypeFile,String user, String password,String path,String ip,String charset) {
-//		this.databaseTypeFile = databaseTypeFile; 
-//		this.path = path;
-//		this.user = user;
-//		this.password = password;
-//		this.ip = ip;
-//		this.charset = charset;
-//	}
+	public Conexao(DatabaseTypeFile databaseTypeFile,String user, String password,String path,String ip,String charset) {
+		this.databaseTypeFile = databaseTypeFile; 
+		this.path = path;
+		this.user = user;
+		this.password = password;
+		this.ip = ip;
+		this.charset = charset;
+	}
 
 	public void conect() {
 
@@ -101,18 +101,18 @@ public class Conexao {
 				Class.forName("oracle.jdbc.driver.OracleDriver");
 				conexao = DriverManager.getConnection("jdbc:oracle:thin:@"+ip+":"+port+":"+nameBD,props);
 
-//			}else if(databaseTypeFile == DatabaseTypeFile.FIREBIRD){  //FIREBIRD
-//				Class.forName("org.firebirdsql.jdbc.FBDriver");
-//				path = path.replace('\\', '/').trim();
-//				conexao = DriverManager.getConnection("jdbc:firebirdsql:"+ip+"/3050:"+path,props);
-//
-//			}else if(databaseTypeFile == DatabaseTypeFile.ACCESS){      //ACCESS
-//
-//				String driver = "sun.jdbc.odbc.JdbcOdbcDriver";
-//				path = path.replace('\\', '/').trim();
-//				String caminho = "jdbc:odbc:"+path;
-//				Class.forName(driver);
-//				conexao = (Connection) DriverManager.getConnection(caminho, props);
+			}else if(databaseTypeFile == DatabaseTypeFile.FIREBIRD){  //FIREBIRD
+				Class.forName("org.firebirdsql.jdbc.FBDriver");
+				path = path.replace('\\', '/').trim();
+				conexao = DriverManager.getConnection("jdbc:firebirdsql:"+ip+"/3050:"+path,props);
+
+			}else if(databaseTypeFile == DatabaseTypeFile.ACCESS){      //ACCESS
+
+				String driver = "sun.jdbc.odbc.JdbcOdbcDriver";
+				path = path.replace('\\', '/').trim();
+				String caminho = "jdbc:odbc:"+path;
+				Class.forName(driver);
+				conexao = (Connection) DriverManager.getConnection(caminho, props);
 
 			}else{
 				System.out.println("Conexao não Encontrada");
@@ -282,8 +282,8 @@ public class Conexao {
 	}
 
 
-//	public DatabaseTypeFile getDatabaseTypeFile() {
-//		return databaseTypeFile;
-//	}
+	public DatabaseTypeFile getDatabaseTypeFile() {
+		return databaseTypeFile;
+	}
 	
 }
