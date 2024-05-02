@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.Properties;
 
 public class Conexao {
-	private Statement statement;
+	public Statement statement;
 	private ResultSet resultSet;
 	private Connection conexao = null;
 	private DatabaseType databaseType = null;
@@ -99,7 +99,8 @@ public class Conexao {
 					port = "1521";
 				}
 				Class.forName("oracle.jdbc.driver.OracleDriver");
-				conexao = DriverManager.getConnection("jdbc:oracle:thin:@"+ip+":"+port+":"+nameBD,props);
+				System.err.println("jdbc:oracle:thin:@"+ip+":"+port+"/"+nameBD);
+				conexao = DriverManager.getConnection("jdbc:oracle:thin:@"+ip+":"+port+"/"+nameBD,props);
 
 			}else if(databaseTypeFile == DatabaseTypeFile.FIREBIRD){  //FIREBIRD
 				Class.forName("org.firebirdsql.jdbc.FBDriver");
@@ -125,10 +126,12 @@ public class Conexao {
 		}
 	}
 
-	public void disconect() {
+	public void disconect(boolean ActivateCommit) {
 		try {
 			if (conexao != null && !conexao.isClosed()) {
-				conexao.commit();
+				if(ActivateCommit) {
+					conexao.commit();
+				}
 				conexao.close();
 
 			}
@@ -175,9 +178,9 @@ public class Conexao {
 			
 			System.out.println(sql);
 			
-			DatabaseMetaData metadata = conexao.getMetaData();
-			 
-            boolean isScrollSensitive = metadata.supportsResultSetType(ResultSet.TYPE_SCROLL_SENSITIVE);
+//			DatabaseMetaData metadata = conexao.getMetaData();			 
+//            boolean isScrollSensitive = metadata.supportsResultSetType(ResultSet.TYPE_SCROLL_SENSITIVE);
+			boolean isScrollSensitive = true;
  
             if (!isScrollSensitive) {
                 System.out.println("The database doesn't support scrollable and sensitive result sets.");
